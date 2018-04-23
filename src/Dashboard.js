@@ -5,14 +5,14 @@ class Dashboard extends Component {
 
     render(){
         
-        const { books, updateShelf } = this.props;
-        const currentlyReading = books.filter((book) => {
+        const { booksOnShelf, updateShelf } = this.props;
+        const currentlyReading = booksOnShelf.filter((book) => {
             return book.shelf === "currentlyReading";
         });
-        const wantToRead = books.filter((book) => {
+        const wantToRead = booksOnShelf.filter((book) => {
             return book.shelf === "wantToRead";
         });
-        const read = books.filter((book) => {
+        const read = booksOnShelf.filter((book) => {
             return book.shelf === "read";
         });
         

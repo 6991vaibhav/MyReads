@@ -16,7 +16,7 @@ class SearchBook extends Component {
 
     render(){
         const { query } = this.state;
-        const { books, searchBooks, updateShelf } = this.props;
+        const { booksOnShelf, books, updateShelf } = this.props;
 
         const showingBooks = query === '' 
             ? []
@@ -46,8 +46,13 @@ class SearchBook extends Component {
                 <div className="search-books-results">
                     <ol className="books-grid">
                         {
-                             
-                            showingBooks.map((book) => {
+                            Array.isArray(showingBooks) &&
+                              showingBooks.map((book) => {
+                                  booksOnShelf.some(function (b) {
+                                      if(b.id === book.id){
+                                        book.shelf = b.shelf;
+                                      }
+                                  })
                                 if(book.authors === undefined && book.imageLinks === undefined){
                                     book.authors = [];
                                     book.authors.push("Placeholder");

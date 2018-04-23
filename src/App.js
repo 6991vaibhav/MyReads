@@ -7,22 +7,21 @@ import './App.css'
 
 class BooksApp extends React.Component {
   booklist = [];
-  booksOnShelf = [];
   state = {
+    booksOnShelf: [],
     books: []
   }
 
   componentDidMount(){
-    BooksAPI.getAll().then((books) => {
+    BooksAPI.getAll().then((booksOnShelf) => {
       this.setState(() => ({
-        books
+        booksOnShelf
       })) 
     })
-    this.booksOnShelf = this.state.books;
   }
 
   updateShelf = (updatedBook, event) => {
-    var listOfBooks = this.state.books;
+    var listOfBooks = this.state.booksOnShelf;
     var shelf = event.target.value;
     BooksAPI.update(updatedBook, shelf).then((res) =>{
       if(res){
@@ -30,9 +29,8 @@ class BooksApp extends React.Component {
         var updatedBookWithNewShelf = updatedBook;
         updatedBookWithNewShelf.shelf = shelf;
         listOfBooks.push(updatedBookWithNewShelf);
-        console.log(listOfBooks);
         this.setState(() => ({
-          books: listOfBooks
+          booksOnShelf: listOfBooks
         }))
       }
     })
@@ -40,9 +38,8 @@ class BooksApp extends React.Component {
 
   searchBooks = (query) => {
     BooksAPI.search(query).then((books) => {
-      this.booklist = this.booksOnShelf.concat(books);
       this.setState(() => ({
-        books: this.booklist
+        books
       }))
     })
   }
@@ -54,12 +51,13 @@ class BooksApp extends React.Component {
       <div className="app">
        <Route exact path='/' render={() => (
          <Dashboard 
-          books={this.state.books}
+         booksOnShelf={this.state.booksOnShelf}
           updateShelf={this.updateShelf}
          />
        )} />
        <Route path='/search' render={() => (
         <SearchBook 
+        booksOnShelf={this.state.booksOnShelf}
          books={this.state.books}
          searchBooks={ this.searchBooks }
          updateShelf={ this.updateShelf }
