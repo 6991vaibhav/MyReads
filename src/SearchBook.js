@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Book from './Book';
 
 class SearchBook extends Component {
     state = {
@@ -16,8 +17,7 @@ class SearchBook extends Component {
 
     render(){
         const { query } = this.state;
-        const { booksOnShelf, books, updateShelf } = this.props;
-
+        const { books, updateShelf } = this.props;
         const showingBooks = query === '' 
             ? []
             : books;
@@ -47,37 +47,9 @@ class SearchBook extends Component {
                     <ol className="books-grid">
                         {
                             Array.isArray(showingBooks) &&
-                              showingBooks.map((book) => {
-                                  booksOnShelf.some(function (b) {
-                                      if(b.id === book.id){
-                                        book.shelf = b.shelf;
-                                      }
-                                  })
-                                if(book.authors === undefined && book.imageLinks === undefined){
-                                    book.authors = [];
-                                    book.authors.push("Placeholder");
-                                    book.imageLinks = {};
-                                    book.imageLinks.thumbnail = "https://vignette.wikia.nocookie.net/undertale-rho/images/5/5f/Placeholder.jpg/revision/latest?cb=20180213155916"
-                                }
+                              showingBooks.map((book) => {                                
                                 return (
-                                <li key={book.id}>
-                                <div className="book">
-                                <div className="book-top">
-                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
-                                    <div className="book-shelf-changer">
-                                    <select onChange={(e) => updateShelf(book,e)} value={book.shelf} >
-                                        <option value="none" disabled>Move to...</option>
-                                        <option value="currentlyReading">Currently Reading</option>
-                                        <option value="wantToRead">Want to Read</option>
-                                        <option value="read">Read</option>
-                                        <option value="none">None</option>
-                                    </select>
-                                    </div>
-                                </div>
-                                <div className="book-title">{book.title}</div>
-                                <div className="book-authors">{book.authors.join()}</div>
-                                </div>
-                            </li>
+                                <Book key={book.id} book={book} updateShelf={updateShelf}/>
                             )})
                         }
                     </ol>

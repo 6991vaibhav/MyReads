@@ -37,11 +37,24 @@ class BooksApp extends React.Component {
   }
 
   searchBooks = (query) => {
+    const tempBooks = this.state.booksOnShelf;
     BooksAPI.search(query).then((books) => {
+       if(books !== undefined){
+          const booksFromAPI = books.map(function (book) {
+          const bookWithShelf = tempBooks.find(b => b.id === book.id);
+            if(bookWithShelf){
+              book.shelf = bookWithShelf.shelf;
+            } else {
+              book.shelf = "none";
+            }
+         return book;
+       });
+     
       this.setState(() => ({
-        books
+        books:booksFromAPI
       }))
-    })
+    }})
+    
   }
 
   
@@ -57,7 +70,6 @@ class BooksApp extends React.Component {
        )} />
        <Route path='/search' render={() => (
         <SearchBook 
-        booksOnShelf={this.state.booksOnShelf}
          books={this.state.books}
          searchBooks={ this.searchBooks }
          updateShelf={ this.updateShelf }
