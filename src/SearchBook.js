@@ -10,7 +10,7 @@ class SearchBook extends Component {
     updateQuery = (query) => {
         this.props.searchBooks(query);
         this.setState(() => ({
-            query: query
+            query
         }));
         
     };

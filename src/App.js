@@ -37,10 +37,11 @@ class BooksApp extends React.Component {
   }
 
   searchBooks = (query) => {
+    let booksFromAPI = [];
     const tempBooks = this.state.booksOnShelf;
     BooksAPI.search(query).then((books) => {
-       if(books !== undefined){
-          const booksFromAPI = books.map(function (book) {
+       if(books !== undefined && Array.isArray(books)){
+          booksFromAPI = books.map(function (book) {
           const bookWithShelf = tempBooks.find(b => b.id === book.id);
             if(bookWithShelf){
               book.shelf = bookWithShelf.shelf;
@@ -49,11 +50,11 @@ class BooksApp extends React.Component {
             }
          return book;
        });
-     
+      }
       this.setState(() => ({
         books:booksFromAPI
       }))
-    }})
+    })
     
   }
 

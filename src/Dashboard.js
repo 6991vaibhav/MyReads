@@ -1,27 +1,25 @@
-import React , { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import BookShelf from './BookShelf';
 
-class Dashboard extends Component {
-
-    render(){
+const Dashboard = (props) => {
         const shelves = {
-          currentlyReading: ['Currently Reading', 'currentlyReading'],
-          wantToRead: ['Want to Read', 'wantToRead'],
-          read: ['Read', 'read']
-        }    
-        return(
+          currentlyReading: { title: 'Currently Reading', key: 'currentlyReading'},
+          wantToRead: {title:'Want to Read', key: 'wantToRead'},
+          read: { title:'Read', key: 'read'}
+        }
+        return (
             <div className="list-books">
                 <div className="list-books-title">
                 <h1>MyReads</h1>
                 </div>
                 <div className="list-books-content">
-                  { Object.keys(shelves).map((shelf) =>
-                    <BookShelf key={shelf}
-                    shelf={shelves[shelf][1]}
-                    title={shelves[shelf][0]}
-                    books={ this.props.booksOnShelf }
-                    updateShelf={this.props.updateShelf}
+                  { Object.values(shelves).map((shelf) =>
+                    <BookShelf key={shelf.key}
+                    shelf={shelf.key}
+                    title={shelf.title}
+                    books={ props.booksOnShelf }
+                    updateShelf={ props.updateShelf }
                     />
                   )}                 
                 </div>
@@ -30,7 +28,6 @@ class Dashboard extends Component {
                 </div>
             </div>
         )
-    }
 }
 
 export default Dashboard;
